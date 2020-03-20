@@ -14,7 +14,7 @@ namespace Cjbc.FaceDataServer.Type {
         ///     face x rotation in radian.
         ///     Should be:
         ///     <code>
-        ///         Math.Clamp(FaceXRadian, -1/Math.PI, 1/Math.PI) == FaceXRadian
+        ///         Math.Clamp(FaceXRadian, -Math.PI, Math.PI) == FaceXRadian
         ///     </code>
         /// </summary>
         public readonly float FaceXRadian;
@@ -23,7 +23,7 @@ namespace Cjbc.FaceDataServer.Type {
         ///     face y rotation in radian.
         ///     Should be:
         ///     <code>
-        ///         Math.Clamp(FaceYRadian, -1/Math.PI, 1/Math.PI) == FaceYRadian
+        ///         Math.Clamp(FaceYRadian, -Math.PI, Math.PI) == FaceYRadian
         ///     </code>
         /// </summary>
         public readonly float FaceYRadian;
@@ -32,7 +32,7 @@ namespace Cjbc.FaceDataServer.Type {
         ///     face z rotation in radian.
         ///     Should be:
         ///     <code>
-        ///         Math.Clamp(FaceZRadian, -1/Math.PI, 1/Math.PI) == FaceZRadian
+        ///         Math.Clamp(FaceZRadian, -Math.PI, Math.PI) == FaceZRadian
         ///     </code>
         /// </summary>
         public readonly float FaceZRadian;

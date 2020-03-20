@@ -20,7 +20,7 @@ namespace Cjbc.FaceDataServer {
         /// <remarks>
         /// Default multicast address is defined in http://github.com/Cj-bc/FDS-protos
         /// </remarks>
-        static IPAddress default_multicast_address = new IPAddress(new byte[] {0xe2, 0x46, 0x44, 0x53});
+        static IPAddress default_multicast_address = IPAddress.Parse("226.70.68.83");
         IPEndPoint endpoint;
 
         /// <summary>Store latest FaceData</summary>

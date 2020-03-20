@@ -12,7 +12,7 @@ namespace Cjbc.FaceDataServer {
         int local_port = 202003;
 
         /// <summary><c>System.Net.Sockets.UdpClient</c> to connect </summary>
-        static UdpClient cl;
+        protected static UdpClient cl;
 
         /// <summary>
         /// Default multicast group address

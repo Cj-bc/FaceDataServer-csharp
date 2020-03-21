@@ -37,6 +37,15 @@ namespace Cjbc.FaceDataServer.Type {
         /// <remarks>This should be range of (0, 150)</remarks>
         public readonly byte   RightEyePercent;
 
+        public FaceData(float x, float y, float z, byte mh, byte mw, byte le, byte re) {
+            FaceXRadian = x;
+            FaceYRadian = y;
+            FaceZRadian = z;
+            MouthHeightPercent = mh;
+            MouthWidthPercent  = mw;
+            LeftEyePercent     = le;
+            RightEyePercent    = re;
+        }
 
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
         /// <param name="raw">raw binary. Make sure protocol version is supported before passing this function</param>

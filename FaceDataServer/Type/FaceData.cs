@@ -24,18 +24,18 @@ namespace Cjbc.FaceDataServer.Type {
 
         /// <summary>how much percent current mouth height is comparing to the default.</summary>
         /// <remarks>This should be range of (0, 150)</remarks>
-        public readonly int   MouthHeightPercent;
+        public readonly byte   MouthHeightPercent;
 
         /// <summary>how much percent current mouth width is comparing to the default.</summary>
         /// <remarks>This should be range of (0, 150)</remarks>
-        public readonly int   MouthWidthPercent;
+        public readonly byte   MouthWidthPercent;
 
         /// <summary>how much percent current left eye height is comparing to the default.</summary>
         /// <remarks>This should be range of (0, 150)</remarks>
-        public readonly int   LeftEyePercent;
+        public readonly byte   LeftEyePercent;
         /// <summary>how much percent current right eye height is comparing to the default.</summary>
         /// <remarks>This should be range of (0, 150)</remarks>
-        public readonly int   RightEyePercent;
+        public readonly byte   RightEyePercent;
 
 
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>

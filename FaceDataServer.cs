@@ -11,11 +11,11 @@ namespace Cjbc.FaceDataServer {
     public class FaceDataServer {
         /// <summary>currently used protocol's major version</summary>
         /// <see>https://github.com/Cj-bc/FDS-protos</see>
-        public static readonly int protocolMajor = 1;
+        public static readonly byte protocolMajor = 1;
 
         /// <summary>currently used protocol's major version</summary>
         /// <see>https://github.com/Cj-bc/FDS-protos</see>
-        public static readonly int protocolMinor = 0;
+        public static readonly byte protocolMinor = 0;
 
         /// <summary>
         /// local port to use.
@@ -61,9 +61,9 @@ namespace Cjbc.FaceDataServer {
             // first 4 bit represents 'Major version', and
             // next  4 bit represents 'Minor version'.
             // see: https://github.com/Cj-bc/FDS-protos/blob/develop/en/communication.md#description-for-each-section
-            int versionByte = BitConverter.ToUInt16(raw, 0) >> 8;
-            int datasMajorV = versionByte >> 4;
-            int datasMinorV = versionByte & 0b00001111;
+            byte versionByte = raw[0];
+            byte datasMajorV = (byte) (versionByte >> 4);
+            byte datasMinorV = (byte) (versionByte & 0b00001111);
 
             return (datasMajorV == protocolMajor) & (datasMinorV >= protocolMinor);
         }

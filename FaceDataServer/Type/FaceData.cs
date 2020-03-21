@@ -36,5 +36,11 @@ namespace Cjbc.FaceDataServer.Type {
         /// <summary>how much percent current right eye height is comparing to the default.</summary>
         /// <remarks>This should be range of (0, 150)</remarks>
         public readonly int   RightEyePercent;
+
+
+        /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
+        /// <param name="raw">raw binary. Make sure protocol version is supported before passing this function</param>
+        public static FaceData FromBinary(byte[] raw) {
+        }
     }
 }

@@ -1,9 +1,13 @@
 using System.Net.Sockets;
 using System.Net;
 using Cjbc.FaceDataServer.Type;
+using System;
 
 namespace Cjbc.FaceDataServer {
 
+    /// <summary>
+    /// A Base class for sender and receiver.
+    /// </summary>
     public class FaceDataServer {
         /// <summary>currently used protocol's major version</summary>
         /// <see>https://github.com/Cj-bc/FDS-protos</see>
@@ -63,6 +67,34 @@ namespace Cjbc.FaceDataServer {
 
             return (datasMajorV == protocolMajor) & (datasMinorV >= protocolMinor);
         }
+    }
+
+
+    /// <summary>
+    ///   Receiver for FaceDataServer
+    /// </summary>
+    public class FaceDataServerReceiver : FaceDataServer {
+        /// <summary>Store latest FaceData received from peer</summary>
+        public FaceData latest;
+
+        /// <summary>Start receiving and storing data</summary>
+        public void StartReceive() {
+            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+            // TODO: forkFinally below codes
+            // from here to
+            byte[] Raw = cl.Receive(ref RemoteIpEndPoint);
+
+            if (ValidateProtocolVersion(Raw)) {
+                latest = FaceData.FromBinary(Raw);
+            }
+            // until here.
+        }
+
+        /// <summary>Stop receiving</summary>
+        public void StopReceive() {
+        }
+
     }
 
 

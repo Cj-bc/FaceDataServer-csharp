@@ -5,6 +5,14 @@ using Cjbc.FaceDataServer.Type;
 namespace Cjbc.FaceDataServer {
 
     public class FaceDataServer {
+        /// <summary>currently used protocol's major version</summary>
+        /// <see>https://github.com/Cj-bc/FDS-protos</see>
+        public static readonly int protocolMajor = 1;
+
+        /// <summary>currently used protocol's major version</summary>
+        /// <see>https://github.com/Cj-bc/FDS-protos</see>
+        public static readonly int protocolMinor = 0;
+
         /// <summary>
         /// local port to use.
         /// This could be random.

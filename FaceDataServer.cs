@@ -39,6 +39,31 @@ namespace Cjbc.FaceDataServer {
             cl.DropMulticastGroup(DefaultEndPoint.Address);
             cl.Dispose();
         }
+
+        /// <summary>
+        ///     Validate if given byte's protocol version is supported
+        ///     Return <c>true</c> when:
+        ///     <list>
+        ///         <item>
+        ///           <description>Major version number is the same as the library</description>
+        ///         </item>
+        ///         <item>
+        ///           <description>Minor version number is the same or grater than the library</description>
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="row">Raw data to validate.</param>
+        protected static bool ValidateProtocolVersion(byte[] raw) {
+            // first 4 bit represents 'Major version', and
+            // next  4 bit represents 'Minor version'.
+            // see: https://github.com/Cj-bc/FDS-protos/blob/develop/en/communication.md#description-for-each-section
+            int versionByte = BitConverter.ToUInt16(raw, 0) >> 8;
+            int datasMajorV = versionByte >> 4;
+            int datasMinorV = versionByte & 0b00001111;
+
+            return (datasMajorV == protocolMajor) & (datasMinorV >= protocolMinor);
+        }
     }
+
 
 }

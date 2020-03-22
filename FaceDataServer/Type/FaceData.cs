@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using System.Net;
+using System;
 
 namespace Cjbc.FaceDataServer.Type {
     /// <summary>
@@ -50,6 +51,25 @@ namespace Cjbc.FaceDataServer.Type {
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
         /// <param name="raw">raw binary. Make sure protocol version is supported before passing this function</param>
         public static FaceData FromBinary(byte[] raw) {
+            byte[] xByte  = new byte[8];
+            byte[] yByte  = new byte[8];
+            byte[] zByte  = new byte[8];
+
+            System.Array.Copy(raw,  0, xByte, 0, 8);
+            System.Array.Copy(raw,  8, yByte, 0, 8);
+            System.Array.Copy(raw, 16, zByte, 0, 8);
+            byte MouthHeigh = raw[24];
+            byte MouthWidth = raw[25];
+            byte LeftEye = raw[26];
+            byte RightEye = raw[27];
+
+            double FaceX = BitConverter.ToDouble(xByte, 0);
+            double FaceY = BitConverter.ToDouble(yByte, 0);
+            double FaceZ = BitConverter.ToDouble(zByte, 0);
+
+            FaceData ret = new FaceData(FaceX, FaceY, FaceZ, MouthHeigh, MouthWidth, LeftEye, RightEye);
+
+            return ret;
         }
     }
 }

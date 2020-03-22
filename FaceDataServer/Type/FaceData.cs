@@ -49,7 +49,9 @@ namespace Cjbc.FaceDataServer.Type {
         }
 
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
-        /// <param name="raw">raw binary. Make sure protocol version is supported before passing this function</param>
+        /// <param name="raw">
+        ///     raw binary. This should NOT contain version number.
+        /// </param>
         public static FaceData FromBinary(byte[] raw) {
             byte[] xByte  = new byte[8];
             byte[] yByte  = new byte[8];

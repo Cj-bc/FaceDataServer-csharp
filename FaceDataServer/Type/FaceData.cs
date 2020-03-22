@@ -12,15 +12,15 @@ namespace Cjbc.FaceDataServer.Type {
     public class FaceData {
         /// <summary>face x rotation in radian.</summary>
         /// <remarks>This should be range of (-<c>Math.PI</c>, <c>Math.PI</c>)</remarks>
-        public readonly float FaceXRadian;
+        public readonly double FaceXRadian;
 
         /// <summary>face y rotation in radian.</summary>
         /// <remarks>This should be range of (-<c>Math.PI</c>, <c>Math.PI</c>)</remarks>
-        public readonly float FaceYRadian;
+        public readonly double FaceYRadian;
 
         /// <summary>face z rotation in radian.</summary>
         /// <remarks>This should be range of (-<c>Math.PI</c>, <c>Math.PI</c>)</remarks>
-        public readonly float FaceZRadian;
+        public readonly double FaceZRadian;
 
         /// <summary>how much percent current mouth height is comparing to the default.</summary>
         /// <remarks>This should be range of (0, 150)</remarks>
@@ -37,6 +37,15 @@ namespace Cjbc.FaceDataServer.Type {
         /// <remarks>This should be range of (0, 150)</remarks>
         public readonly byte   RightEyePercent;
 
+        public FaceData(double x, double y, double z, byte mh, byte mw, byte le, byte re) {
+            FaceXRadian = x;
+            FaceYRadian = y;
+            FaceZRadian = z;
+            MouthHeightPercent = mh;
+            MouthWidthPercent  = mw;
+            LeftEyePercent     = le;
+            RightEyePercent    = re;
+        }
 
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
         /// <param name="raw">raw binary. Make sure protocol version is supported before passing this function</param>

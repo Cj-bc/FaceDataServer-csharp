@@ -67,7 +67,7 @@ namespace Cjbc.FaceDataServer {
             byte datasMajorV = (byte) (versionByte >> 4);
             byte datasMinorV = (byte) (versionByte & 0b00001111);
 
-            return (datasMajorV == protocolMajor) & (datasMinorV >= protocolMinor);
+            return (datasMajorV == protocolMajor) && (datasMinorV >= protocolMinor);
         }
     }
 

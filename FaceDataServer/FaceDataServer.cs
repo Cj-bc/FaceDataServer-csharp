@@ -77,7 +77,7 @@ namespace Cjbc.FaceDataServer {
     /// </summary>
     public class FaceDataServerReceiver : FaceDataServer {
         /// <summary>Store latest FaceData received from peer</summary>
-        public FaceData latest;
+        public FaceData latest = FaceData.Default();
 
         CancellationTokenSource cts;
         Task thread;

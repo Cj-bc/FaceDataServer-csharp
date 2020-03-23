@@ -47,6 +47,10 @@ namespace Cjbc.FaceDataServer.Type {
             RightEyePercent    = re;
         }
 
+        public static FaceData Default() {
+            return new FaceData(0, 0, 0, 100, 100, 100, 100);
+        }
+
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
         /// <param name="raw">
         ///     raw binary. This should NOT contain version number.

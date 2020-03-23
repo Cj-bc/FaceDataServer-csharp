@@ -23,7 +23,7 @@ namespace Cjbc.FaceDataServer {
         /// local port to use.
         /// This could be random.
         /// </summary>
-        int local_port = 202003;
+        int local_port = 20203;
 
         /// <summary><c>System.Net.Sockets.UdpClient</c> to connect </summary>
         protected static UdpClient cl;

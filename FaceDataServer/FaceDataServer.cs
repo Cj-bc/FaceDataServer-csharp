@@ -80,31 +80,34 @@ namespace Cjbc.FaceDataServer {
         public FaceData latest;
 
         CancellationTokenSource cts;
-        Task<FaceData> thread;
+        Task thread;
 
 
         /// <summary>Start receiving and storing data</summary>
         public void StartReceive() {
-            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
             cts = new CancellationTokenSource();
-            thread = GenerateReceivingAsync(cts);
+
+            thread = Task.Run(() => {
+                            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+                            while (!cts.IsCancellationRequested) {
+                                byte[] Raw      = cl.Receive(ref RemoteIpEndPoint);
+                                byte[] Version  = new byte[1];
+                                byte[] Contents = new byte[Raw.Length - 1];
+                                Array.Copy(Raw, Version, 1);
+                                Array.Copy(Raw, 1, Contents, 0, Contents.Length);
+
+                                // TODO: Throw exception if Version is not supported
+                                if (ValidateProtocolVersion(Version)) {
+                                    latest = FaceData.FromBinary(Contents);
+                                }
+                            }
+                          });
+
+
         }
 
-        async Task<FaceData> GenerateReceivingAsync(CancellationTokenSource c) {
-            while (!c.IsCancellationRequested) {
-                byte[] Raw      = cl.Receive(ref RemoteIpEndPoint);
-                byte[] Version  = new byte[1];
-                byte[] Contents = new byte[Raw.GetLength() - 1];
-                Array.Copy(Raw, Version, 1);
-                Array.Copy(Raw, 1, Contents, 0, Contents.GetLength());
-
-                // TODO: Throw exception if Version is not supported
-                if (ValidateProtocolVersion(Version)) {
-                    latest = FaceData.FromBinary(Contents);
-                }
-            }
-        }
 
         /// <summary>Stop receiving</summary>
         public void StopReceive() {

@@ -14,7 +14,7 @@ namespace Cjbc.FaceDataServer.UnitTests.Type {
         private FaceDataComparer comparer = new FaceDataComparer();
 
         [Fact]
-        public void FromBinary_supportedVersionInput_ReturnFaceData() {
+        public void FromBinary_CorrectInput_ReturnFaceData() {
             FaceData result = FaceData.FromBinary(testBinary);
 
             Assert.Equal(correctResult, result, comparer);

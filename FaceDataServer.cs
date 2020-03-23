@@ -2,6 +2,8 @@ using System.Net.Sockets;
 using System.Net;
 using Cjbc.FaceDataServer.Type;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cjbc.FaceDataServer {
 
@@ -77,25 +79,36 @@ namespace Cjbc.FaceDataServer {
         /// <summary>Store latest FaceData received from peer</summary>
         public FaceData latest;
 
+        CancellationTokenSource cts;
+        Task<FaceData> thread;
+
+
         /// <summary>Start receiving and storing data</summary>
         public void StartReceive() {
             IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-            // TODO: forkFinally below codes
-            // from here to
-            byte[] Raw = cl.Receive(ref RemoteIpEndPoint);
+            cts = new CancellationTokenSource();
+            thread = GenerateReceivingAsync(cts);
+        }
 
-            if (ValidateProtocolVersion(Raw)) {
-                latest = FaceData.FromBinary(Raw);
+        async Task<FaceData> GenerateReceivingAsync(CancellationTokenSource c) {
+            while (!c.IsCancellationRequested) {
+                byte[] Raw      = cl.Receive(ref RemoteIpEndPoint);
+                byte[] Version  = new byte[1];
+                byte[] Contents = new byte[Raw.GetLength() - 1];
+                Array.Copy(Raw, Version, 1);
+                Array.Copy(Raw, 1, Contents, 0, Contents.GetLength());
+
+                // TODO: Throw exception if Version is not supported
+                if (ValidateProtocolVersion(Version)) {
+                    latest = FaceData.FromBinary(Contents);
+                }
             }
-            // until here.
         }
 
         /// <summary>Stop receiving</summary>
         public void StopReceive() {
+            cts.Cancel();
         }
-
     }
-
-
 }

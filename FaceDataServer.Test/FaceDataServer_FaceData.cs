@@ -32,6 +32,29 @@ namespace Cjbc.FaceDataServer.UnitTests.Type {
             yield return new object[] {v};
         }
 
+        public static IEnumerable<object[]> RandomBinaryFaceData() {
+            var RandGen = new System.Random();
+            Func<System.Random, double> genRad  = (g) => (g.NextDouble() * 2 * Math.PI) - Math.PI;
+            Func<System.Random, byte>   genPerc = (g) => (byte)g.Next(0, 150);
+
+            byte[] a = BitConverter.GetBytes(genRad(RandGen));
+            byte[] b = BitConverter.GetBytes(genRad(RandGen));
+            byte[] c = BitConverter.GetBytes(genRad(RandGen));
+            Array.Reverse(a);
+            Array.Reverse(b);
+            Array.Reverse(c);
+            byte[] ret = new byte[28];
+            Array.Copy(a, 0, ret,  0, 8);
+            Array.Copy(b, 0, ret,  8, 8);
+            Array.Copy(c, 0, ret, 16, 8);
+            ret[25] = genPerc(RandGen);
+            ret[26] = genPerc(RandGen);
+            ret[27] = genPerc(RandGen);
+
+
+            yield return new object[] {ret};
+        }
+
 
         [Fact]
         public void FromBinary_CorrectInput_ReturnFaceData() {
@@ -46,6 +69,14 @@ namespace Cjbc.FaceDataServer.UnitTests.Type {
             FaceData ret = FaceData.FromBinary(inData.ToBinary());
 
             Assert.Equal(inData, ret, comparer);
+        }
+
+        [Theory]
+        [MemberData(nameof(RandomBinaryFaceData))]
+        public void ToBinaryFromBinary_ReturnSameAsInput(byte[] inData) {
+            byte[] ret = FaceData.FromBinary(inData).ToBinary();
+
+            Assert.Equal(inData, ret);
         }
 
     }

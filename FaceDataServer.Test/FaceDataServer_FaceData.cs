@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System;
 using Xunit;
 using Cjbc.FaceDataServer.Type;
 
@@ -13,12 +15,39 @@ namespace Cjbc.FaceDataServer.UnitTests.Type {
                                                };
         private FaceDataComparer comparer = new FaceDataComparer();
 
+        /// <summary>Generate Randomized FaceData for Xunit</summary>
+        public static IEnumerable<object[]> RandomFaceData() {
+            var RandGen = new System.Random();
+            Func<System.Random, double> genRad  = (g) => (g.NextDouble() * 2 * Math.PI) - Math.PI;
+            Func<System.Random, byte>   genPerc = (g) => (byte)g.Next(0, 150);
+
+            FaceData v = new FaceData(genRad(RandGen)
+                                     , genRad(RandGen)
+                                     , genRad(RandGen)
+                                     , genPerc(RandGen)
+                                     , genPerc(RandGen)
+                                     , genPerc(RandGen)
+                                     , genPerc(RandGen)
+                                     );
+            yield return new object[] {v};
+        }
+
+
         [Fact]
         public void FromBinary_CorrectInput_ReturnFaceData() {
             FaceData result = FaceData.FromBinary(testBinary);
 
             Assert.Equal(correctResult, result, comparer);
         }
+
+        [Theory]
+        [MemberData(nameof(RandomFaceData))]
+        public void FromBinaryToBinary_ReturnSameAsInput(FaceData inData) {
+            FaceData ret = FaceData.FromBinary(inData.ToBinary());
+
+            Assert.Equal(inData, ret, comparer);
+        }
+
     }
 
 

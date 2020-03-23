@@ -82,5 +82,33 @@ namespace Cjbc.FaceDataServer.Type {
 
             return ret;
         }
+
+        /// <summary>
+        ///     Convert to binary format.
+        ///     This will generate 'big endian' binary
+        /// </summary>
+        public byte[] ToBinary() {
+            byte[] bin = new byte[28];
+            byte[] faceX = BitConverter.GetBytes(this.FaceXRadian);
+            byte[] faceY = BitConverter.GetBytes(this.FaceYRadian);
+            byte[] faceZ = BitConverter.GetBytes(this.FaceZRadian);
+
+            // Make sure binaries are big endian
+            if (BitConverter.IsLittleEndian) {
+                Array.Reverse(faceX);
+                Array.Reverse(faceY);
+                Array.Reverse(faceZ);
+            }
+
+            Array.Copy(faceX, 0, bin,  0, 8);
+            Array.Copy(faceY, 0, bin,  8, 8);
+            Array.Copy(faceZ, 0, bin, 16, 8);
+            bin[24] = this.MouthHeightPercent;
+            bin[25] = this.MouthWidthPercent;
+            bin[26] = this.LeftEyePercent;
+            bin[27] = this.RightEyePercent;
+
+            return bin;
+        }
     }
 }

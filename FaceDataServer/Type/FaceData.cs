@@ -50,10 +50,8 @@ namespace Cjbc.FaceDataServer.Type {
         /// <summary>Parse Raw Bytes and create <c>FaceData</c> from that if possible</summary>
         /// <param name="raw">
         ///     raw binary. This should NOT contain version number.
-        ///     This SHOULD be big endian.
+        ///     This SHOULD be big endian(Internet byte code).
         /// </param>
-        // TODO: Determine endian.
-        //  System local endian is 'little endian' though I expect 'big endian'
         public static FaceData FromBinary(byte[] raw) {
             byte[] xByte  = new byte[8];
             byte[] yByte  = new byte[8];
@@ -74,6 +72,8 @@ namespace Cjbc.FaceDataServer.Type {
             byte LeftEye = raw[26];
             byte RightEye = raw[27];
 
+            // BitConverter.To* reads given byte as system-local endian binary.
+            // (It's mostly little endian)
             double FaceX = BitConverter.ToDouble(xByte, 0);
             double FaceY = BitConverter.ToDouble(yByte, 0);
             double FaceZ = BitConverter.ToDouble(zByte, 0);

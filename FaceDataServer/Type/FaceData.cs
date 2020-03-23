@@ -1,4 +1,3 @@
-using System.Net.Sockets;
 using System.Net;
 using System;
 
@@ -60,17 +59,20 @@ namespace Cjbc.FaceDataServer.Type {
             byte[] yByte  = new byte[8];
             byte[] zByte  = new byte[8];
 
+            // TODO: Is this heigh cost manipulation?
             System.Array.Copy(raw,  0, xByte, 0, 8);
             System.Array.Copy(raw,  8, yByte, 0, 8);
             System.Array.Copy(raw, 16, zByte, 0, 8);
+            if (BitConverter.IsLittleEndian) {
+                System.Array.Reverse(xByte);
+                System.Array.Reverse(yByte);
+                System.Array.Reverse(zByte);
+            }
+
             byte MouthHeigh = raw[24];
             byte MouthWidth = raw[25];
             byte LeftEye = raw[26];
             byte RightEye = raw[27];
-
-            if (BitConverter.IsLittleEndian) {
-                // Convert {x,y,z}Byte to big
-            }
 
             double FaceX = BitConverter.ToDouble(xByte, 0);
             double FaceY = BitConverter.ToDouble(yByte, 0);

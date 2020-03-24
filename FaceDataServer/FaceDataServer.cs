@@ -107,7 +107,8 @@ namespace Cjbc.FaceDataServer {
                 latest = FaceData.FromBinary(Contents);
             }
 
-            cl.BeginReceive(new AsyncCallback(onFDSReceived), null);
+            if (!cts.IsCancellationRequested)
+                cl.BeginReceive(new AsyncCallback(onFDSReceived), null);
         }
 
 

@@ -40,9 +40,9 @@ namespace Cjbc.FaceDataServer.Unity {
                                                    , ((float)latest.FaceYRadian) * Mathf.Rad2Deg
                                                    , ((float)latest.FaceZRadian) * Mathf.Rad2Deg
                                                    );
-            head.localRotation = Quaternion.Lerp(head.localRotation, latestRot, Mathf.Clamp(Time.time * 0.01f, 0.0f, 1.0f));
+            head.localRotation = Quaternion.Lerp(head.localRotation, latestRot, Mathf.Clamp(Time.time * 0.03f, 0.0f, 1.0f));
+
+
         }
-
-
     }
 }

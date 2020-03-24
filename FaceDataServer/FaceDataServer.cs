@@ -82,30 +82,33 @@ namespace Cjbc.FaceDataServer {
         CancellationTokenSource cts;
         Task thread;
 
+        IPEndPoint peer = null;
 
         /// <summary>Start receiving and storing data</summary>
         public void StartReceive() {
 
             cts = new CancellationTokenSource();
 
-            thread = Task.Run(() => {
-                            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-                            while (!cts.IsCancellationRequested) {
-                                byte[] Raw      = cl.Receive(ref RemoteIpEndPoint);
-                                byte[] Version  = new byte[1];
-                                byte[] Contents = new byte[Raw.Length - 1];
-                                Array.Copy(Raw, Version, 1);
-                                Array.Copy(Raw, 1, Contents, 0, Contents.Length);
-
-                                // TODO: Throw exception if Version is not supported
-                                if (ValidateProtocolVersion(Version)) {
-                                    latest = FaceData.FromBinary(Contents);
-                                }
-                            }
-                          });
+            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 5032);
+            cl.BeginReceive(new AsyncCallback(onFDSReceived), null);
 
 
+        }
+
+        void onFDSReceived(IAsyncResult result) {
+            byte[] Received = cl.EndReceive(result, ref peer);
+            byte[] Version  = new byte[1];
+            byte[] Contents = new byte[Received.Length - 1];
+            Array.Copy(Received, Version, 1);
+            Array.Copy(Received, 1, Contents, 0, Contents.Length);
+
+            // TODO: Throw exception if Version is not supported
+            if (ValidateProtocolVersion(Version)) {
+                latest = FaceData.FromBinary(Contents);
+            }
+
+            if (!cts.IsCancellationRequested)
+                cl.BeginReceive(new AsyncCallback(onFDSReceived), null);
         }
 
 

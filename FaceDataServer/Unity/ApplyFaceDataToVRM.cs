@@ -51,12 +51,13 @@ namespace Cjbc.FaceDataServer.Unity {
             // FDS define '0' to 'closing eye', '1' to 'opened eye', but UniVRM is opposit way.
             // I should convert it.
             //
-            // I define 'EyePercent > 100 represents surprising'.
+            // I defined 'EyePercent > 100' represents 'surprising'.
             if (latest.LeftEyePercent > 100 || latest.RightEyePercent > 100) {
                 face.Add(new BlendShapeKey(BlendShapePreset.Blink_L), 0.0f);
                 face.Add(new BlendShapeKey(BlendShapePreset.Blink_R), 0.0f);
-                face.Add(new BlendShapeKey(BlendShapePreset.O), 0.0f);
-                // Surprised parameter is affected by bigger eye size
+                face.Add(new BlendShapeKey(BlendShapePreset.A), 0.0f);
+                face.Add(new BlendShapeKey(BlendShapePreset.U), 0.0f);
+                // Surprised parameter is affected by bigger one
                 face.Add(new BlendShapeKey("Surprised")
                         , 2.0f * (Mathf.Max(latest.RightEyePercent, latest.LeftEyePercent) - 100.0f) / 100.0f);
             } else {
@@ -64,8 +65,10 @@ namespace Cjbc.FaceDataServer.Unity {
                 face.Add(new BlendShapeKey(BlendShapePreset.Blink_L), 1.0f - latest.LeftEyePercent / 100.0f);
                 face.Add(new BlendShapeKey(BlendShapePreset.Blink_R), 1.0f - latest.RightEyePercent / 100.0f);
                 // TODO: Apply MouthWidthPercent too
-                face.Add(new BlendShapeKey(BlendShapePreset.O)
+                face.Add(new BlendShapeKey(BlendShapePreset.A)
                         , Mathf.Clamp(latest.MouthHeightPercent, 0.0f, 100.0f) / 100.0f);
+                face.Add(new BlendShapeKey(BlendShapePreset.U)
+                        , 1.0f - Mathf.Clamp(latest.MouthWidthPercent, 0.0f, 100.0f) / 100.0f);
             }
 
             blenderShapeProxy.SetValues(face);

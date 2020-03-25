@@ -34,10 +34,10 @@ namespace Cjbc.FaceDataServer {
         /// <remarks>
         /// Default multicast address is defined in http://github.com/Cj-bc/FDS-protos
         /// </remarks>
-        static IPEndPoint DefaultEndPoint = new IPEndPoint(IPAddress.Parse("226.70.68.83"), 0);
+        static IPEndPoint DefaultEndPoint = new IPEndPoint(IPAddress.Parse("226.70.68.83"), 5032);
 
         public FaceDataServer() {
-            cl = new UdpClient(local_port); // Need to bind to port in order to join multicast group
+            cl = new UdpClient(DefaultEndPoint.Port); // Need to bind to port in order to join multicast group
             cl.JoinMulticastGroup(DefaultEndPoint.Address);
         }
 

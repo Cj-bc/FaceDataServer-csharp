@@ -39,7 +39,7 @@ namespace Cjbc.FaceDataServer.Unity {
         void Update()
         {
             latest = source.latest();
-            Quaternion latestRot = Quaternion.Euler( ((float)latest.FaceXRadian) * Mathf.Rad2Deg
+            Quaternion latestRot = Quaternion.Euler( -((float)latest.FaceXRadian) * Mathf.Rad2Deg
                                                    , ((float)latest.FaceYRadian) * Mathf.Rad2Deg
                                                    , ((float)latest.FaceZRadian) * Mathf.Rad2Deg
                                                    );

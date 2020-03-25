@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Cjbc.FaceDataServer.Unity;
 using Cjbc.FaceDataServer.Type;
 using VRM;
 

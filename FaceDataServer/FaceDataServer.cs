@@ -103,9 +103,8 @@ namespace Cjbc.FaceDataServer {
             Array.Copy(Received, 1, Contents, 0, Contents.Length);
 
             // TODO: Throw exception if Version is not supported
-            if (ValidateProtocolVersion(Version)) {
+            if (ValidateProtocolVersion(Version))
                 latest = FaceData.FromBinary(Contents);
-            }
 
             if (!cts.IsCancellationRequested)
                 cl.BeginReceive(new AsyncCallback(onFDSReceived), null);

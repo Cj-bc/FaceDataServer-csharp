@@ -159,7 +159,7 @@ namespace Cjbc.FaceDataServer.Unity {
         /// <exception cref="MissingAssetException">When Asset of given <c>name</c> is not found</exception>
         private Object LoadFDSAsset<T>(string name) {
             string[] guids = AssetDatabase.FindAssets(name);
-            if(guids is null) throw new MissingAssetException(name);
+            if(guids is null || guids.Length == 0) throw new MissingAssetException(name);
 
             string guid = guids[0];
             string assetpath = AssetDatabase.GUIDToAssetPath(guid);

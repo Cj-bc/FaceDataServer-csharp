@@ -115,9 +115,9 @@ namespace Cjbc.FaceDataServer.Unity {
 
             BlendTree rootTree = new BlendTree();
             rootTree.blendType = BlendTreeType.Direct;
-            rootTree.AddBlendTreeChild(xRotationTree);
-            rootTree.AddBlendTreeChild(yRotationTree);
-            rootTree.AddBlendTreeChild(zRotationTree);
+            rootTree.AddChild(xRotationTree);
+            rootTree.AddChild(yRotationTree);
+            rootTree.AddChild(zRotationTree);
             // }}}
 
             // Default State configuration {{{2
@@ -147,7 +147,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             original_c.AddLayer(faceRotationLayer);
 
-            animator.runtimeAnimatorController = (runtimeAnimatorController)original_c;
+            animator.runtimeAnimatorController = (RuntimeAnimatorController)original_c;
         }
 
         /// <summary>

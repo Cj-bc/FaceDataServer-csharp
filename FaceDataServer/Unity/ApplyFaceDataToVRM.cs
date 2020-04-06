@@ -145,6 +145,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // 2, 3, 4
             AnimatorController original_c = (AnimatorController)animator.runtimeAnimatorController;
+            if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
 
             original_c.AddLayer(faceRotationLayer);
 

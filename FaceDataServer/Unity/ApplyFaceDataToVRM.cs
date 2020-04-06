@@ -133,7 +133,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // Layer configuration {{{2
             AnimatorControllerLayer faceRotationLayer = new AnimatorControllerLayer();
-            faceRotationLayer.avatarMask    = LoadFDSAsset("FDS_HeadRotationMask.mask");
+            faceRotationLayer.avatarMask    = LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask.mask");
             faceRotationLayer.blendingMode  = AnimatorLayerBlendingMode.Override;
             faceRotationLayer.defaultWeight = 1.0f;
             faceRotationLayer.iKPass        = false;

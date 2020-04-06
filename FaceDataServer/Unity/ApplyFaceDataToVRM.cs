@@ -44,14 +44,18 @@ namespace Cjbc.FaceDataServer.Unity {
         void Update()
         {
             latest = source.latest();
+
+            // ----- Set Face Rotation -----
+            // between 0 to 1
             Quaternion latestRot = Quaternion.Euler( -((float)latest.FaceXRadian) * Mathf.Rad2Deg
                                                    , ((float)latest.FaceYRadian) * Mathf.Rad2Deg
                                                    , ((float)latest.FaceZRadian) * Mathf.Rad2Deg
                                                    );
             head.localRotation = Quaternion.Lerp(head.localRotation, latestRot, Mathf.Clamp(Time.time * 0.03f, 0.0f, 1.0f));
 
-            Dictionary<BlendShapeKey, float> face = new Dictionary<BlendShapeKey, float> {};
 
+            // ----- Set Facial Expression -----
+            Dictionary<BlendShapeKey, float> face = new Dictionary<BlendShapeKey, float> {};
 
             // FDS define '0' to 'closing eye', '1' to 'opened eye', but UniVRM is opposit way.
             // I should convert it.

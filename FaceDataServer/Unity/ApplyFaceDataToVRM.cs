@@ -101,8 +101,9 @@ namespace Cjbc.FaceDataServer.Unity {
         private void InjectAnimationLayer() {
             // 1. Create new layer that contains faceRotation blend tree
             // 2. Get currently used animatorController
-            // 3. Add layer to the controller
-            // 4. Save it
+            // 3. Add Animation Parameters
+            // 4. Add layer to the controller
+            // 5. Save it
 
             string XRotationParameterName = "X_Rotation";
             string YRotationParameterName = "Y_Rotation";
@@ -143,8 +144,15 @@ namespace Cjbc.FaceDataServer.Unity {
             // }}}
             // }}}
 
-            // 2, 3, 4
+            // 2
             AnimatorController original_c = (AnimatorController)animator.runtimeAnimatorController;
+
+            // 3
+            original_c.AddParameter(XRotationParameterName, AnimatorControllerParameterType.Float);
+            original_c.AddParameter(YRotationParameterName, AnimatorControllerParameterType.Float);
+            original_c.AddParameter(ZRotationParameterName, AnimatorControllerParameterType.Float);
+
+            // 4, 5
             if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
 
             original_c.AddLayer(faceRotationLayer);

@@ -133,7 +133,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // Layer configuration {{{2
             AnimatorControllerLayer faceRotationLayer = new AnimatorControllerLayer();
-            faceRotationLayer.avatarMask    = LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask.mask");
+            faceRotationLayer.avatarMask    = (AvatarMask)LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask.mask");
             faceRotationLayer.blendingMode  = AnimatorLayerBlendingMode.Override;
             faceRotationLayer.defaultWeight = 1.0f;
             faceRotationLayer.iKPass        = false;
@@ -155,13 +155,13 @@ namespace Cjbc.FaceDataServer.Unity {
         ///     If asset is not found, throw exception
         /// </summary>
         /// <exception cref="MissingAssetException">When Asset of given <c>name</c> is not found</exception>
-        private Type LoadFDSAsset<Type>(string name) {
+        private Object LoadFDSAsset<T>(string name) {
             string[] guids = AssetDatabase.FindAssets(name);
             if(guids is null) throw new MissingAssetException(name);
 
             string guid = guids[0];
             string assetpath = AssetDatabase.GUIDToAssetPath(guid);
-            return (Type)AssetDatabase.LoadAssetAtPath(assetpath, typeof(Type));
+            return AssetDatabase.LoadAssetAtPath(assetpath, typeof(T));
         }
     }
 }

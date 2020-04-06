@@ -110,9 +110,9 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // 1. {{{
             // BlendTree configuration {{{2
-            BlendTree xRotationTree = CreateChild("FDS_LookUp.anim"  , "FDS_LookDown.anim", XRotationParameterName);
-            BlendTree yRotationTree = CreateChild("FDS_LookLeft.anim", "FDS_LookRight.anim", YRotationParameterName);
-            BlendTree zRotationTree = CreateChild("FDS_TiltLeft.anim", "FDS_TiltRight.anim", ZRotationParameterName);
+            BlendTree xRotationTree = CreateChild("FDS_LookUp"  , "FDS_LookDown", XRotationParameterName);
+            BlendTree yRotationTree = CreateChild("FDS_LookLeft", "FDS_LookRight", YRotationParameterName);
+            BlendTree zRotationTree = CreateChild("FDS_TiltLeft", "FDS_TiltRight", ZRotationParameterName);
 
             BlendTree rootTree = new BlendTree();
             rootTree.blendType = BlendTreeType.Direct;
@@ -134,7 +134,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // Layer configuration {{{2
             AnimatorControllerLayer faceRotationLayer = new AnimatorControllerLayer();
-            faceRotationLayer.avatarMask    = (AvatarMask)LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask.mask");
+            faceRotationLayer.avatarMask    = (AvatarMask)LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask");
             faceRotationLayer.blendingMode  = AnimatorLayerBlendingMode.Override;
             faceRotationLayer.defaultWeight = 1.0f;
             faceRotationLayer.iKPass        = false;

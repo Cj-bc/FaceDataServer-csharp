@@ -39,6 +39,11 @@ namespace Cjbc.FaceDataServer.Unity {
             animator = GetComponent<Animator>();
 
             InjectAnimationLayer();
+
+            animator.SetFloat("Blend", 1.0f);
+            animator.SetFloat("X_Rotation", 0.5f);
+            animator.SetFloat("Y_Rotation", 0.5f);
+            animator.SetFloat("Z_Rotation", 0.5f);
         }
 
         // Update is called once per frame

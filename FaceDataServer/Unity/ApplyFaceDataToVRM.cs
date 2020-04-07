@@ -127,6 +127,7 @@ namespace Cjbc.FaceDataServer.Unity {
             BlendTree zRotationTree = CreateChild("zRotationTree", "FDS_TiltLeft", "FDS_TiltRight", ZRotationParameterName);
 
             BlendTree rootTree = new BlendTree();
+            rootTree.name = "faceRotationRootTree";
             rootTree.blendType = BlendTreeType.Direct;
             rootTree.AddChild(xRotationTree);
             rootTree.AddChild(yRotationTree);
@@ -143,6 +144,7 @@ namespace Cjbc.FaceDataServer.Unity {
             AnimatorStateMachine stateMachine = new AnimatorStateMachine();
             // TODO: Maybe this line blow have bug.
             // Should make transition
+            stateMachine.name = "faceRotationState";
             stateMachine.AddState(defState, new Vector3(0, 0, 0));
             // }}}
 

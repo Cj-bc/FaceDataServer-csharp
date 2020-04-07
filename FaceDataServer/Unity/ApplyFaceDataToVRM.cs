@@ -84,8 +84,9 @@ namespace Cjbc.FaceDataServer.Unity {
             blenderShapeProxy.SetValues(face);
         }
 
-        private BlendTree CreateChild(string FirstMotion, string SecondMotion, string parameterName) {
+        private BlendTree CreateChild(string name, string FirstMotion, string SecondMotion, string parameterName) {
             BlendTree result = new BlendTree();
+            result.name = name;
             result.blendType = BlendTreeType.Simple1D;
             result.AddChild((Motion)LoadFDSAsset<Motion>(FirstMotion));
             result.AddChild((Motion)LoadFDSAsset<Motion>(SecondMotion));
@@ -111,9 +112,9 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // 1. {{{
             // BlendTree configuration {{{2
-            BlendTree xRotationTree = CreateChild("FDS_LookUp"  , "FDS_LookDown", XRotationParameterName);
-            BlendTree yRotationTree = CreateChild("FDS_LookLeft", "FDS_LookRight", YRotationParameterName);
-            BlendTree zRotationTree = CreateChild("FDS_TiltLeft", "FDS_TiltRight", ZRotationParameterName);
+            BlendTree xRotationTree = CreateChild("xRotationTree", "FDS_LookUp"  , "FDS_LookDown", XRotationParameterName);
+            BlendTree yRotationTree = CreateChild("yRotationTree", "FDS_LookLeft", "FDS_LookRight", YRotationParameterName);
+            BlendTree zRotationTree = CreateChild("zRotationTree", "FDS_TiltLeft", "FDS_TiltRight", ZRotationParameterName);
 
             BlendTree rootTree = new BlendTree();
             rootTree.blendType = BlendTreeType.Direct;

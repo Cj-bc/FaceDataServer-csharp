@@ -100,17 +100,22 @@ namespace Cjbc.FaceDataServer.Unity {
         ///     into currently attached model's animatorController.
         /// </summary>
         private void InjectAnimationLayer() {
-            // 1. Create new layer that contains faceRotation blend tree
-            // 2. Get currently used animatorController
+            // 1. Get currently used animatorController and check if Injection is needed
+            // 2. Create new layer that contains faceRotation blend tree
             // 3. Add Animation Parameters
             // 4. Add layer to the controller
             // 5. Save it
+
+            // 1.
+            AnimatorController original_c = (AnimatorController)animator.runtimeAnimatorController;
+            if((System.Array.Find(original_c.layers, l => l.name == "faceRotation")) != null)
+                return;
 
             string XRotationParameterName = "X_Rotation";
             string YRotationParameterName = "Y_Rotation";
             string ZRotationParameterName = "Z_Rotation";
 
-            // 1. {{{
+            // 2. {{{
             // BlendTree configuration {{{2
             BlendTree xRotationTree = CreateChild("xRotationTree", "FDS_LookUp"  , "FDS_LookDown", XRotationParameterName);
             BlendTree yRotationTree = CreateChild("yRotationTree", "FDS_LookLeft", "FDS_LookRight", YRotationParameterName);
@@ -146,9 +151,6 @@ namespace Cjbc.FaceDataServer.Unity {
             faceRotationLayer.stateMachine  = stateMachine;
             // }}}
             // }}}
-
-            // 2
-            AnimatorController original_c = (AnimatorController)animator.runtimeAnimatorController;
 
             // 3
             original_c.AddParameter(XRotationParameterName, AnimatorControllerParameterType.Float);

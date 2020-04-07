@@ -144,8 +144,6 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // State Machine configuration {{{2
             AnimatorStateMachine stateMachine = new AnimatorStateMachine();
-            // TODO: Maybe this line blow have bug.
-            // Should make transition
             stateMachine.name = "faceRotationState";
             stateMachine.AddState(defState, new Vector3(0, 0, 0));
             // }}}

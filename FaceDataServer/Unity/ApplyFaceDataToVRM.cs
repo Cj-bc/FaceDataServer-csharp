@@ -52,12 +52,14 @@ namespace Cjbc.FaceDataServer.Unity {
             latest = source.latest();
 
             // ----- Set Face Rotation -----
-            // between 0 to 1
-            Quaternion latestRot = Quaternion.Euler( -((float)latest.FaceXRadian) * Mathf.Rad2Deg
-                                                   , ((float)latest.FaceYRadian) * Mathf.Rad2Deg
-                                                   , ((float)latest.FaceZRadian) * Mathf.Rad2Deg
-                                                   );
-            head.localRotation = Quaternion.Lerp(head.localRotation, latestRot, Mathf.Clamp(Time.time * 0.03f, 0.0f, 1.0f));
+            // Model can rotate -40~40 degree.
+            // So firstly, I'll clamp
+            float x = Mathf.Clamp(-((float)latest.FaceXRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
+            float y = Mathf.Clamp( ((float)latest.FaceYRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
+            float z = Mathf.Clamp( ((float)latest.FaceZRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
+            animator.SetFloat("X_Rotation", (x + 40f) / 80f);
+            animator.SetFloat("Y_Rotation", (y + 40f) / 80f);
+            animator.SetFloat("Z_Rotation", (z + 40f) / 80f);
 
 
             // ----- Set Facial Expression -----

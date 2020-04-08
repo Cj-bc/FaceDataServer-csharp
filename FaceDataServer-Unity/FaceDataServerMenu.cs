@@ -86,7 +86,7 @@ namespace Cjbc.FaceDataServer.Unity {
             faceRotationLayer.blendingMode  = AnimatorLayerBlendingMode.Override;
             faceRotationLayer.defaultWeight = 1.0f;
             faceRotationLayer.iKPass        = false;
-            faceRotationLayer.name          = "faceRotation";
+            faceRotationLayer.name          = FDS_LayerName;
             faceRotationLayer.stateMachine  = stateMachine;
             // }}}
             // }}}

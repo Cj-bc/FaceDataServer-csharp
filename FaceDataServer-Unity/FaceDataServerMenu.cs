@@ -43,9 +43,10 @@ namespace Cjbc.FaceDataServer.Unity {
 
         /// <summary>Inject FDS layer to given controller, if it doesn't have one</summary>
         static void InjectLayer(AnimatorController c) {
-            if(c.layers.Any(l => l.name == FDS_LayerName))
+            if(c.layers.Any(l => l.name == FDS_LayerName)) {
                 Debug.Log($"The AnimatorController '{c.ToString()}' already have layer '{FDS_LayerName}'. Stop Injecting to this");
                 return;
+            }
 
             // Use memorized one
             if(layer != null) {
@@ -117,9 +118,10 @@ namespace Cjbc.FaceDataServer.Unity {
         /// <summary>Execute 'AddParameter' only if given controller doesn't have it</summary>
         static private void AddParameterIfNeeded(AnimatorController c, string name) {
             AnimatorControllerParameter[] parameters = c.parameters;
-            if(parameters.Any(p => p.name == name))
+            if(parameters.Any(p => p.name == name)) {
                 Debug.Log($"The AnimatorController '{c.ToString()}' already have parameter '{name}'. Stop Injecting to this");
                 return;
+            }
 
             c.AddParameter(name, AnimatorControllerParameterType.Float);
         }

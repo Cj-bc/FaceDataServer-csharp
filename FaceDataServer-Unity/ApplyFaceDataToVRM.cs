@@ -118,6 +118,8 @@ namespace Cjbc.FaceDataServer.Unity {
             if((System.Array.Find(original_c.layers, l => l.name == "faceRotation")) != null)
                 return;
 
+            if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
+
             string XRotationParameterName = "X_Rotation";
             string YRotationParameterName = "Y_Rotation";
             string ZRotationParameterName = "Z_Rotation";
@@ -165,7 +167,6 @@ namespace Cjbc.FaceDataServer.Unity {
             AddParameterIfNeeded(original_c, ZRotationParameterName);
 
             // 4, 5
-            if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
 
             original_c.AddLayer(faceRotationLayer);
 

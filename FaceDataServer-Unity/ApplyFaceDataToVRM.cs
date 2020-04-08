@@ -160,9 +160,9 @@ namespace Cjbc.FaceDataServer.Unity {
             // }}}
 
             // 3
-            original_c.AddParameter(XRotationParameterName, AnimatorControllerParameterType.Float);
-            original_c.AddParameter(YRotationParameterName, AnimatorControllerParameterType.Float);
-            original_c.AddParameter(ZRotationParameterName, AnimatorControllerParameterType.Float);
+            AddParameterIfNeeded(original_c, XRotationParameterName);
+            AddParameterIfNeeded(original_c, YRotationParameterName);
+            AddParameterIfNeeded(original_c, ZRotationParameterName);
 
             // 4, 5
             if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
@@ -171,6 +171,15 @@ namespace Cjbc.FaceDataServer.Unity {
 
             animator.runtimeAnimatorController = (RuntimeAnimatorController)original_c;
         }
+
+
+        /// <summary>Execute 'AddParameter' only if given controller doesn't have it</summary>
+        private void AddParameterIfNeeded(AnimatorController c, string name) {
+            AnimatorControllerParameter parameters[] = c.parameters;
+            if((System.Array.Find(parameters, p => p.name == name)) != default(AnimatorControllerParameter))
+                c.AddParameter(name, AnimatorControllerParameterType.Float);
+        }
+
 
         /// <summary>
         ///     wrapper of <c>LoadAssetAtPath</c> for this unitypackage

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor.Animations;
 using UnityEditor;
 using System.Linq;
+using Cjbc.FaceDataServer.Unity.Exceptions;
 
 namespace Cjbc.FaceDataServer.Unity {
 

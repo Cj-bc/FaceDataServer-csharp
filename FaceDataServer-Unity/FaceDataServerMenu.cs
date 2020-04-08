@@ -114,7 +114,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
 
         /// <summary>Execute 'AddParameter' only if given controller doesn't have it</summary>
-        private void AddParameterIfNeeded(AnimatorController c, string name) {
+        static private void AddParameterIfNeeded(AnimatorController c, string name) {
             AnimatorControllerParameter[] parameters = c.parameters;
             if(parameters.Any(p => p.name == name))
                 Debug.Log($"The AnimatorController '{c.ToString()}' already have parameter '{name}'. Stop Injecting to this");
@@ -129,7 +129,7 @@ namespace Cjbc.FaceDataServer.Unity {
         ///     If asset is not found, throw exception
         /// </summary>
         /// <exception cref="MissingAssetException">When Asset of given <c>name</c> is not found</exception>
-        private UnityEngine.Object LoadFDSAsset<T>(string name) {
+        static private UnityEngine.Object LoadFDSAsset<T>(string name) {
             string[] guids = AssetDatabase.FindAssets(name);
             if(guids is null || guids.Length == 0) throw new MissingAssetException(name);
 

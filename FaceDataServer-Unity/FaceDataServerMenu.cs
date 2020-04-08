@@ -47,7 +47,7 @@ namespace Cjbc.FaceDataServer.Unity {
                 return;
 
             // Use memorized one
-            if(layer) {
+            if(layer != null) {
                 c.AddLayer(layer);
                 return;
             }

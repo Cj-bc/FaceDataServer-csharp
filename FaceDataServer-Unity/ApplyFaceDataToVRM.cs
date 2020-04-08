@@ -182,7 +182,7 @@ namespace Cjbc.FaceDataServer.Unity {
         /// <summary>Execute 'AddParameter' only if given controller doesn't have it</summary>
         private void AddParameterIfNeeded(AnimatorController c, string name) {
             AnimatorControllerParameter[] parameters = c.parameters;
-            if((System.Array.Find(parameters, p => p.name == name)) != default(AnimatorControllerParameter))
+            if((System.Array.Find(parameters, p => p.name == name)) == default(AnimatorControllerParameter))
                 c.AddParameter(name, AnimatorControllerParameterType.Float);
         }
 

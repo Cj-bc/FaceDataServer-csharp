@@ -39,9 +39,9 @@ namespace Cjbc.FaceDataServer.Unity {
             animator = GetComponent<Animator>();
 
             animator.SetFloat("Blend", 1.0f);
-            animator.SetFloat("X_Rotation", 0.5f);
-            animator.SetFloat("Y_Rotation", 0.5f);
-            animator.SetFloat("Z_Rotation", 0.5f);
+            animator.SetFloat(FaceDataServerMenu.XRotationParameterName, 0.5f);
+            animator.SetFloat(FaceDataServerMenu.YRotationParameterName, 0.5f);
+            animator.SetFloat(FaceDataServerMenu.ZRotationParameterName, 0.5f);
         }
 
         // Update is called once per frame
@@ -55,9 +55,9 @@ namespace Cjbc.FaceDataServer.Unity {
             float x = Mathf.Clamp(-((float)latest.FaceXRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
             float y = Mathf.Clamp( ((float)latest.FaceYRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
             float z = Mathf.Clamp( ((float)latest.FaceZRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
-            animator.SetFloat("X_Rotation", (x + 40f) / 80f);
-            animator.SetFloat("Y_Rotation", (y + 40f) / 80f);
-            animator.SetFloat("Z_Rotation", (z + 40f) / 80f);
+            animator.SetFloat(FaceDataServerMenu.XRotationParameterName, (x + 40f) / 80f);
+            animator.SetFloat(FaceDataServerMenu.YRotationParameterName, (y + 40f) / 80f);
+            animator.SetFloat(FaceDataServerMenu.ZRotationParameterName, (z + 40f) / 80f);
 
 
             // ----- Set Facial Expression -----

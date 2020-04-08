@@ -18,9 +18,9 @@ namespace Cjbc.FaceDataServer.Unity {
         /// <summary>Inject layer and Animation Parameters required by FDS</summary>
         [MenuItem("FaceDataServer/Inject Required Layer & Parameters")]
         static void InjectRequiredLayerAndParameter() {
-            AnimatorController controllers = Selection.assetGUIDs
-                                            .Select(id => AssetDatabase.GUIDToAssetPath(id))
-                                            .Select(path => AssetDatabase.LoadAssetAtPath(path));
+            AnimatorController[] controllers = Selection.assetGUIDs
+                                                .Select(id => AssetDatabase.GUIDToAssetPath(id))
+                                                .Select(path => (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController)));
 
             foreach(var controller in controllers) {
                 InjectLayer(controller);

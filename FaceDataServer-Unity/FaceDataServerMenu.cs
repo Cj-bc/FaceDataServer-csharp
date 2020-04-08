@@ -9,10 +9,25 @@ namespace Cjbc.FaceDataServer.Unity {
 
     public class FaceDataServerMenu : MonoBehaviour
     {
+        static AnimatorControllerLayer layer = null;
+        static string FDS_LayerName = "FDS_faceRotation";
+        static string XRotationParameterName = "FDS_X_Rotation";
+        static string YRotationParameterName = "FDS_Y_Rotation";
+        static string ZRotationParameterName = "FDS_Z_Rotation";
 
+        /// <summary>Inject layer and Animation Parameters required by FDS</summary>
         [MenuItem("FaceDataServer/Inject Required Layer & Parameters")]
         static void InjectRequiredLayerAndParameter() {
-            
+            AnimatorController controllers = Selection.assetGUIDs
+                                            .Select(id => AssetDatabase.GUIDToAssetPath(id))
+                                            .Select(path => AssetDatabase.LoadAssetAtPath(path));
+
+            foreach(var controller in controllers) {
+                InjectLayer(controller);
+                InjectParameters(controller);
+            }
+
+            AssetDatabase.SaveAssets();
         }
 
         [MenuItem("FaceDataServer/Inject Required Layer & Parameters", true)]
@@ -23,5 +38,104 @@ namespace Cjbc.FaceDataServer.Unity {
                       .Any(t => t == typeof(AnimatorController));
         }
 
+
+
+        /// <summary>Inject FDS layer to given controller, if it doesn't have one</summary>
+        static void InjectLayer(AnimatorController c) {
+            if(c.layers.Any(l => l.name == FDS_LayerName))
+                Debug.Log($"The AnimatorController '{c.ToString()}' already have layer '{FDS_LayerName}'. Stop Injecting to this");
+                return;
+
+            // Use memorized one
+            if(layer) {
+                c.AddLayer(layer);
+                return;
+            }
+
+            // Creating Layer {{{
+            // BlendTree configuration {{{2
+            BlendTree xRotationTree = CreateChild("xRotationTree", "FDS_LookUp"  , "FDS_LookDown", XRotationParameterName);
+            BlendTree yRotationTree = CreateChild("yRotationTree", "FDS_LookLeft", "FDS_LookRight", YRotationParameterName);
+            BlendTree zRotationTree = CreateChild("zRotationTree", "FDS_TiltLeft", "FDS_TiltRight", ZRotationParameterName);
+
+            BlendTree rootTree = new BlendTree();
+            rootTree.name = "faceRotationRootTree";
+            rootTree.blendType = BlendTreeType.Direct;
+            rootTree.AddChild(xRotationTree);
+            rootTree.AddChild(yRotationTree);
+            rootTree.AddChild(zRotationTree);
+            // }}}
+
+            // Default State configuration {{{2
+            AnimatorState defState = new AnimatorState();
+            defState.motion = rootTree;
+            // TODO: Should we turn on 'WriteDefaultValues'?
+            // }}}
+
+            // State Machine configuration {{{2
+            AnimatorStateMachine stateMachine = new AnimatorStateMachine();
+            stateMachine.name = "faceRotationState";
+            stateMachine.AddState(defState, new Vector3(0, 0, 0));
+            // }}}
+
+            // Layer configuration {{{2
+            AnimatorControllerLayer faceRotationLayer = new AnimatorControllerLayer();
+            faceRotationLayer.avatarMask    = (AvatarMask)LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask");
+            faceRotationLayer.blendingMode  = AnimatorLayerBlendingMode.Override;
+            faceRotationLayer.defaultWeight = 1.0f;
+            faceRotationLayer.iKPass        = false;
+            faceRotationLayer.name          = "faceRotation";
+            faceRotationLayer.stateMachine  = stateMachine;
+            // }}}
+            // }}}
+
+            c.AddLayer(faceRotationLayer);
+            layer = faceRotationLayer;
+        }
+
+
+        /// <summary>Inject FDS animation parameters if it doesn't have</summary>
+        static void InjectParameters(AnimatorController c) {
+            AddParameterIfNeeded(c, XRotationParameterName);
+            AddParameterIfNeeded(c, YRotationParameterName);
+            AddParameterIfNeeded(c, ZRotationParameterName);
+        }
+
+
+        static BlendTree CreateChild(string name, string FirstMotion, string SecondMotion, string parameterName) {
+            BlendTree result = new BlendTree();
+            result.name = name;
+            result.blendType = BlendTreeType.Simple1D;
+            result.AddChild((Motion)LoadFDSAsset<Motion>(FirstMotion));
+            result.AddChild((Motion)LoadFDSAsset<Motion>(SecondMotion));
+            result.blendParameter = parameterName;
+            return result;
+        }
+
+
+        /// <summary>Execute 'AddParameter' only if given controller doesn't have it</summary>
+        private void AddParameterIfNeeded(AnimatorController c, string name) {
+            AnimatorControllerParameter[] parameters = c.parameters;
+            if(parameters.Any(p => p.name == name))
+                Debug.Log($"The AnimatorController '{c.ToString()}' already have parameter '{name}'. Stop Injecting to this");
+                return;
+
+            c.AddParameter(name, AnimatorControllerParameterType.Float);
+        }
+
+
+        /// <summary>
+        ///     wrapper of <c>LoadAssetAtPath</c> for this unitypackage
+        ///     If asset is not found, throw exception
+        /// </summary>
+        /// <exception cref="MissingAssetException">When Asset of given <c>name</c> is not found</exception>
+        private UnityEngine.Object LoadFDSAsset<T>(string name) {
+            string[] guids = AssetDatabase.FindAssets(name);
+            if(guids is null || guids.Length == 0) throw new MissingAssetException(name);
+
+            string guid = guids[0];
+            string assetpath = AssetDatabase.GUIDToAssetPath(guid);
+            return AssetDatabase.LoadAssetAtPath(assetpath, typeof(T));
+        }
     }
 }

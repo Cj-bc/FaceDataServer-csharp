@@ -10,10 +10,10 @@ namespace Cjbc.FaceDataServer.Unity {
     public class FaceDataServerMenu : MonoBehaviour
     {
         static AnimatorControllerLayer layer = null;
-        static string FDS_LayerName = "FDS_faceRotation";
-        static string XRotationParameterName = "FDS_X_Rotation";
-        static string YRotationParameterName = "FDS_Y_Rotation";
-        static string ZRotationParameterName = "FDS_Z_Rotation";
+        public static string FDS_LayerName = "FDS_faceRotation";
+        public static string XRotationParameterName = "FDS_X_Rotation";
+        public static string YRotationParameterName = "FDS_Y_Rotation";
+        public static string ZRotationParameterName = "FDS_Z_Rotation";
 
         /// <summary>Inject layer and Animation Parameters required by FDS</summary>
         [MenuItem("FaceDataServer/Inject Required Layer & Parameters")]

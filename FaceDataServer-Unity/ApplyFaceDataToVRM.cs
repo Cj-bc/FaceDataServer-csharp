@@ -115,8 +115,6 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // 1.
             AnimatorController original_c = (AnimatorController)animator.runtimeAnimatorController;
-            if((System.Array.Find(original_c.layers, l => l.name == "faceRotation")) != null)
-                return;
 
             if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
 
@@ -168,6 +166,13 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // 4, 5
 
+            // As sometimes layer's StateMachine disappear after rebooting Unity, I'll re-Add layer.
+            for (int idx = 0; idx < original_c.layers.Length; i++) {
+                if (original_c.layers[i].name == "faceRotation") {
+                    original_c.RemoveLayer(idx);
+                    break;
+                }
+            }
             original_c.AddLayer(faceRotationLayer);
 
             animator.runtimeAnimatorController = (RuntimeAnimatorController)original_c;

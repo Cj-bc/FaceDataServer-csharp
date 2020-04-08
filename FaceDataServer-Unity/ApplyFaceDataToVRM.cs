@@ -192,7 +192,7 @@ namespace Cjbc.FaceDataServer.Unity {
         ///     If asset is not found, throw exception
         /// </summary>
         /// <exception cref="MissingAssetException">When Asset of given <c>name</c> is not found</exception>
-        private Object LoadFDSAsset<T>(string name) {
+        private UnityEngine.Object LoadFDSAsset<T>(string name) {
             string[] guids = AssetDatabase.FindAssets(name);
             if(guids is null || guids.Length == 0) throw new MissingAssetException(name);
 

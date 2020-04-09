@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor.Animations;
 using UnityEditor;
 using Cjbc.FaceDataServer.Type;
-using Cjbc.FaceDataServer.Unity.Exceptions;
 using VRM;
 
 namespace Cjbc.FaceDataServer.Unity {

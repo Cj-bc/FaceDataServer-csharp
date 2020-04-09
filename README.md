@@ -1,3 +1,7 @@
+日本語: [JA_README.md](JA_README.md)
+
+---
+
 # FaceDataServer-csharp
 
 This is implementation of [FaceDataServer protocol](https://github.com/Cj-bc/FDS-protos) for C#.

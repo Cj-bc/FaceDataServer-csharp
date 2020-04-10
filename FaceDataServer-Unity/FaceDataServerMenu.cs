@@ -15,6 +15,7 @@ namespace Cjbc.FaceDataServer.Unity {
         public static string XRotationParameterName = "FDS_X_Rotation";
         public static string YRotationParameterName = "FDS_Y_Rotation";
         public static string ZRotationParameterName = "FDS_Z_Rotation";
+        public static string BlendParameterName     = "FDS_Blend";
 
         /// <summary>Inject layer and Animation Parameters required by FDS</summary>
         [MenuItem("FaceDataServer/Inject Required Layer & Parameters")]
@@ -64,6 +65,7 @@ namespace Cjbc.FaceDataServer.Unity {
             BlendTree rootTree = new BlendTree();
             rootTree.name = "faceRotationRootTree";
             rootTree.blendType = BlendTreeType.Direct;
+            rootTree.blendParameter = BlendParameterName;
             rootTree.AddChild(xRotationTree);
             rootTree.AddChild(yRotationTree);
             rootTree.AddChild(zRotationTree);
@@ -116,6 +118,7 @@ namespace Cjbc.FaceDataServer.Unity {
             AddParameterIfNeeded(c, XRotationParameterName);
             AddParameterIfNeeded(c, YRotationParameterName);
             AddParameterIfNeeded(c, ZRotationParameterName);
+            AddParameterIfNeeded(c, BlendParameterName);
         }
 
 

@@ -37,7 +37,7 @@ namespace Cjbc.FaceDataServer.Unity {
                         ;
             animator = GetComponent<Animator>();
 
-            animator.SetFloat("Blend", 1.0f);
+            animator.SetFloat(FaceDataServerMenu.BlendParameterName, 1.0f);
             animator.SetFloat(FaceDataServerMenu.XRotationParameterName, 0.5f);
             animator.SetFloat(FaceDataServerMenu.YRotationParameterName, 0.5f);
             animator.SetFloat(FaceDataServerMenu.ZRotationParameterName, 0.5f);

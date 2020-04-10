@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [0.3.0] - 2020-04-10
+
+### Change
+- Use 'FaceDataServer/Inject Required Layer & Parameters' menu item to inject required layer and parameters
+
+### Removed
+- InjectAnimationLayer in ApplyFaceDataToVRM.cs
+
+
 ## [0.2.0] - 2020-04-07
 
 ### Changed

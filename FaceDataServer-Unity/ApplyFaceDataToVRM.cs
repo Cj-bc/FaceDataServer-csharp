@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor.Animations;
 using UnityEditor;
 using Cjbc.FaceDataServer.Type;
-using Cjbc.FaceDataServer.Unity.Exceptions;
 using VRM;
 
 namespace Cjbc.FaceDataServer.Unity {
@@ -38,12 +37,10 @@ namespace Cjbc.FaceDataServer.Unity {
                         ;
             animator = GetComponent<Animator>();
 
-            InjectAnimationLayer();
-
             animator.SetFloat("Blend", 1.0f);
-            animator.SetFloat("X_Rotation", 0.5f);
-            animator.SetFloat("Y_Rotation", 0.5f);
-            animator.SetFloat("Z_Rotation", 0.5f);
+            animator.SetFloat(FaceDataServerMenu.XRotationParameterName, 0.5f);
+            animator.SetFloat(FaceDataServerMenu.YRotationParameterName, 0.5f);
+            animator.SetFloat(FaceDataServerMenu.ZRotationParameterName, 0.5f);
         }
 
         // Update is called once per frame
@@ -57,9 +54,9 @@ namespace Cjbc.FaceDataServer.Unity {
             float x = Mathf.Clamp(-((float)latest.FaceXRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
             float y = Mathf.Clamp( ((float)latest.FaceYRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
             float z = Mathf.Clamp( ((float)latest.FaceZRadian) * Mathf.Rad2Deg, -40.0f, 40.0f);
-            animator.SetFloat("X_Rotation", (x + 40f) / 80f);
-            animator.SetFloat("Y_Rotation", (y + 40f) / 80f);
-            animator.SetFloat("Z_Rotation", (z + 40f) / 80f);
+            animator.SetFloat(FaceDataServerMenu.XRotationParameterName, (x + 40f) / 80f);
+            animator.SetFloat(FaceDataServerMenu.YRotationParameterName, (y + 40f) / 80f);
+            animator.SetFloat(FaceDataServerMenu.ZRotationParameterName, (z + 40f) / 80f);
 
 
             // ----- Set Facial Expression -----
@@ -89,101 +86,6 @@ namespace Cjbc.FaceDataServer.Unity {
             }
 
             blenderShapeProxy.SetValues(face);
-        }
-
-        private BlendTree CreateChild(string name, string FirstMotion, string SecondMotion, string parameterName) {
-            BlendTree result = new BlendTree();
-            result.name = name;
-            result.blendType = BlendTreeType.Simple1D;
-            result.AddChild((Motion)LoadFDSAsset<Motion>(FirstMotion));
-            result.AddChild((Motion)LoadFDSAsset<Motion>(SecondMotion));
-            result.blendParameter = parameterName;
-            return result;
-        }
-
-
-        /// <summary>
-        ///     Inject new Animation layer which perform face rotation
-        ///     into currently attached model's animatorController.
-        /// </summary>
-        private void InjectAnimationLayer() {
-            // 1. Get currently used animatorController and check if Injection is needed
-            // 2. Create new layer that contains faceRotation blend tree
-            // 3. Add Animation Parameters
-            // 4. Add layer to the controller
-            // 5. Save it
-
-            // 1.
-            AnimatorController original_c = (AnimatorController)animator.runtimeAnimatorController;
-            if((System.Array.Find(original_c.layers, l => l.name == "faceRotation")) != null)
-                return;
-
-            string XRotationParameterName = "X_Rotation";
-            string YRotationParameterName = "Y_Rotation";
-            string ZRotationParameterName = "Z_Rotation";
-
-            // 2. {{{
-            // BlendTree configuration {{{2
-            BlendTree xRotationTree = CreateChild("xRotationTree", "FDS_LookUp"  , "FDS_LookDown", XRotationParameterName);
-            BlendTree yRotationTree = CreateChild("yRotationTree", "FDS_LookLeft", "FDS_LookRight", YRotationParameterName);
-            BlendTree zRotationTree = CreateChild("zRotationTree", "FDS_TiltLeft", "FDS_TiltRight", ZRotationParameterName);
-
-            BlendTree rootTree = new BlendTree();
-            rootTree.name = "faceRotationRootTree";
-            rootTree.blendType = BlendTreeType.Direct;
-            rootTree.AddChild(xRotationTree);
-            rootTree.AddChild(yRotationTree);
-            rootTree.AddChild(zRotationTree);
-            // }}}
-
-            // Default State configuration {{{2
-            AnimatorState defState = new AnimatorState();
-            defState.motion = rootTree;
-            // TODO: Should we turn on 'WriteDefaultValues'?
-            // }}}
-
-            // State Machine configuration {{{2
-            AnimatorStateMachine stateMachine = new AnimatorStateMachine();
-            stateMachine.name = "faceRotationState";
-            stateMachine.AddState(defState, new Vector3(0, 0, 0));
-            // }}}
-
-            // Layer configuration {{{2
-            AnimatorControllerLayer faceRotationLayer = new AnimatorControllerLayer();
-            faceRotationLayer.avatarMask    = (AvatarMask)LoadFDSAsset<AvatarMask>("FDS_HeadRotationMask");
-            faceRotationLayer.blendingMode  = AnimatorLayerBlendingMode.Override;
-            faceRotationLayer.defaultWeight = 1.0f;
-            faceRotationLayer.iKPass        = false;
-            faceRotationLayer.name          = "faceRotation";
-            faceRotationLayer.stateMachine  = stateMachine;
-            // }}}
-            // }}}
-
-            // 3
-            original_c.AddParameter(XRotationParameterName, AnimatorControllerParameterType.Float);
-            original_c.AddParameter(YRotationParameterName, AnimatorControllerParameterType.Float);
-            original_c.AddParameter(ZRotationParameterName, AnimatorControllerParameterType.Float);
-
-            // 4, 5
-            if (original_c is null) Debug.LogError("Model's AnimatorController is missing. Please attach it.");
-
-            original_c.AddLayer(faceRotationLayer);
-
-            animator.runtimeAnimatorController = (RuntimeAnimatorController)original_c;
-        }
-
-        /// <summary>
-        ///     wrapper of <c>LoadAssetAtPath</c> for this unitypackage
-        ///     If asset is not found, throw exception
-        /// </summary>
-        /// <exception cref="MissingAssetException">When Asset of given <c>name</c> is not found</exception>
-        private Object LoadFDSAsset<T>(string name) {
-            string[] guids = AssetDatabase.FindAssets(name);
-            if(guids is null || guids.Length == 0) throw new MissingAssetException(name);
-
-            string guid = guids[0];
-            string assetpath = AssetDatabase.GUIDToAssetPath(guid);
-            return AssetDatabase.LoadAssetAtPath(assetpath, typeof(T));
         }
     }
 }

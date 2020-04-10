@@ -26,6 +26,7 @@ namespace Cjbc.FaceDataServer.Unity {
             foreach(var controller in controllers) {
                 InjectLayer(controller);
                 InjectParameters(controller);
+                EditorUtility.SetDirty(controller);
             }
 
             AssetDatabase.SaveAssets();
@@ -93,6 +94,19 @@ namespace Cjbc.FaceDataServer.Unity {
 
             c.AddLayer(faceRotationLayer);
             layer = faceRotationLayer;
+
+            // Save asset
+            // Each stuff I created should be 'Add'ed with 'AddObjectToAsset'
+            // otherwise they'll be gone forever.
+            // Reference:
+            //   - https://forum.unity.com/threads/modify-animatorcontroller-through-script-and-save-it.612844/#post-5271999
+            var controllerAssetPath = AssetDatabase.GetAssetPath(c);
+            AssetDatabase.AddObjectToAsset(stateMachine, controllerAssetPath);
+            AssetDatabase.AddObjectToAsset(defState, controllerAssetPath);
+            AssetDatabase.AddObjectToAsset(rootTree, controllerAssetPath);
+            AssetDatabase.AddObjectToAsset(xRotationTree, controllerAssetPath);
+            AssetDatabase.AddObjectToAsset(yRotationTree, controllerAssetPath);
+            AssetDatabase.AddObjectToAsset(zRotationTree, controllerAssetPath);
         }
 
 

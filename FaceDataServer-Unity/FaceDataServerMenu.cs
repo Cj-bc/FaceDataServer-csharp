@@ -71,6 +71,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // Default State configuration {{{2
             AnimatorState defState = new AnimatorState();
+            defState.name = "faceRotationDefaultState";
             defState.motion = rootTree;
             // TODO: Should we turn on 'WriteDefaultValues'?
             // }}}

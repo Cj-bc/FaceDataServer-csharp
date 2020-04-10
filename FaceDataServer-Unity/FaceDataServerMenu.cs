@@ -78,7 +78,7 @@ namespace Cjbc.FaceDataServer.Unity {
 
             // State Machine configuration {{{2
             AnimatorStateMachine stateMachine = new AnimatorStateMachine();
-            stateMachine.name = "faceRotationState";
+            stateMachine.name = "faceRotationStateMachine";
             stateMachine.AddState(defState, new Vector3(0, 0, 0));
             // }}}
 
